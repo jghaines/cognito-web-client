@@ -53,10 +53,10 @@ function doCognitioData(){
 function doDynamoData() {
     console.log( "doDynamoData()" );
 
-    var ddb = new AWS.DynamoDB();
+    var ddb = new AWS.DynamoDB( { region : "us-west-2" } );
                  
     // Scan the table
-    ddb.scan({TableName: 'Users'}, function (err, data) {
+    ddb.scan({ TableName: 'Users'}, function (err, data) {
         if (err){   // an error occurred
             console.error(err);   
         }else{      // successful response
