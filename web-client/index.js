@@ -29,7 +29,8 @@ function startAwsSession() {
         sessionToken    : AWS.config.credentials.sessionToken,
     }, null, 2));
     doCognitioData();
-    doDynamoData();
+//    doDynamoData();
+    doApiCall( AWS.config.credentials );
 //    doS3List();
 }
 
@@ -76,4 +77,26 @@ function doS3List() {
 
     var s3 = new AWS.S3();
     s3.listBuckets( data => console.log(JSON.stringify( data, null, 2 )));
+}
+
+
+function doApiCall( credentials ) {
+    
+    var apigClient = apigClientFactory.newClient({
+        accessKey     : credentials.accessKeyId,
+        secretKey : credentials.secretAccessKey,
+        sessionToken    : credentials.sessionToken,
+        region: "us-west-2"
+    });
+
+    var body = {
+        "client" : "cognito-web-client"
+    };
+
+    apigClient.echoPost({}, body, {})
+        .then(function(result){
+            console.log(JSON.stringify( data, null, 2 ));
+        }).catch( function(result){
+            console.error(JSON.stringify( result, null, 2 ));
+        });
 }
